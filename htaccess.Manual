@@ -1,0 +1,427 @@
+################################################################################
+###################            .htaccess Tutorial            ###################
+################################################################################
+
+######################################################
+###################    Contents    ###################
+######################################################
+
+# 1 RewriteEngine
+# 2 Remove Extensions (Friendly Urls)
+# 3 Force URL to Non WWW / to WWW
+# 4 Force URL to end with '/' and without '/'
+# 5 Force index.php to '/'
+# 6 Custom Error Responses
+# 7 Cache Control (expire date)
+# 8 Block addresses like SPAM
+# 9 Password Protect Files/Sub.Domains
+# 10 Prevent files from being loaded
+
+
+
+######################################################
+####################      1       ####################
+###################  RewiteEngine  ###################
+####################              ####################
+######################################################
+
+
+RewriteEngine On
+
+###################
+# Conditions
+###################
+
+# This can go anywhere as long as it is before any 'RewriteCond' or 'RewriteRule' lines
+
+###################
+# What it does
+###################
+
+# What it does is turn on/off the comment mode for mod_rewrite (RewriteEngine off starts comment mode; RewriteEngine on
+# turns the comment mode off - using the "on" mode "merely" ensures that the comment mode hadn't been turned on  elsewhere).
+
+
+######################################################
+###################       2        ###################
+################   Remove Extension   ################
+##################   Friendly URL   ##################
+######################################################
+
+
+###################
+# Template
+###################
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.extentsion [NC,L]
+
+###################
+# Example
+###################
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
+
+###################
+# Conditions
+###################
+
+# If you want to remove multiple extensions then you will need to have multiple versions all with different extensions.
+# This only will execute the 1st 'RewriteRule' below it
+
+###################
+# What it does
+###################
+
+# What this does is remove any extensions presented in the URL so if a user looks for 'www.example.com/jobs.php' they will be show that page but it will appear as 'www.example.com/jobs'
+
+
+######################################################
+###################       3        ###################
+##########  Force URL to Non WWW / to WWW  ###########
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+RewriteRule ^(.*)$ http://example.com/$1 [L,R=301]
+
+###################
+# Example
+###################
+
+RewriteCond %{HTTP_HOST} ^www\.google\.com [NC]
+RewriteRule ^(.*)$ http://google.com/$1 [L,R=301]
+
+###################
+# Conditions
+###################
+
+# If you want to remove multiple extensions then you will need to have multiple versions all with different extensions.
+# This only will execute the 1st 'RewriteRule' below it
+
+###################
+# What it does
+###################
+
+# What this does is force all users and robots to go to the non www. version of your website.
+
+###################
+# Alternative
+###################
+
+RewriteCond %{HTTP_HOST} ^example.com [NC]
+RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301,NC]
+
+###################
+# What it does
+###################
+
+# This forces URLS to got to the www. version of a site.
+
+######################################################
+###################       4        ###################
+#######  Force URL to Non '/' and without '/'  #######
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+RewriteCond %{HTTP_HOST} ^www\.example\.example/$1 [NC]
+RewriteRule ^(.*)$ http://www.example.com [L,R=301]
+
+###################
+# Example
+###################
+
+RewriteCond %{HTTP_HOST} ^www\.google\.com/$1 [NC]
+RewriteRule ^(.*)$ http://www.google.com [L,R=301]
+
+###################
+# Conditions
+###################
+
+# If you want to remove multiple extensions then you will need to have multiple versions all with different extensions.
+# This only will execute the 1st 'RewriteRule' below it
+
+###################
+# What it does
+###################
+
+# What this does is force the URL to remove any '/' if there is one at the end
+
+###################
+# Alternative
+###################
+
+RewriteCond %{HTTP_HOST} ^www\.example\.com [NC]
+RewriteRule ^(.*)$ http://www.example.com/$1 [L,R=301]
+
+###################
+# What it does
+###################
+
+# This forces the URl to have a '/' on the end
+
+######################################################
+###################       5        ###################
+##############  Force index.php to '/'  ##############
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^/]+/)*(default|index)\.(html|php|htm)\ HTTP/ [NC]
+RewriteRule ^(([^/]+/)*)(default|main|index)\.(html|php|htm)$ http://example.com/$1 [L,R=301]
+
+###################
+# Example
+###################
+
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /([^/]+/)*(default|index)\.(html|php|htm)\ HTTP/ [NC]
+RewriteRule ^(([^/]+/)*)(default|main|index)\.(html|php|htm)$ http://google.com/$1 [L,R=301]
+
+###################
+# Conditions
+###################
+
+# If you want to remove multiple extensions then you will need to have multiple versions all with different extensions.
+# This only will execute the 1st 'RewriteRule' below it
+
+###################
+# What it does
+###################
+
+# This forces index.php or index.html whatever the default page is to become '/' in the URL
+
+######################################################
+###################       6        ###################
+#############   Custom Error Responses   #############
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+ErrorDocument <3-digit-code> <action>
+
+###################
+# Example
+###################
+
+ErrorDocument 500 "Sorry, our script crashed. Oh dear"
+ErrorDocument 500 /cgi-bin/crash-recover
+ErrorDocument 500 http://error.example.com/server_error.html
+ErrorDocument 404 /404.php |OR| http://www.example.com/404.php
+ErrorDocument 401 /subscription/how_to_subscribe.html
+
+###################
+# Conditions
+###################
+
+# Must be under RewriteEngine on
+
+###################
+# What it does
+###################
+
+# This makes it so that the error requests go to the specified location or show a certain custom message
+
+######################################################
+###################       7        ###################
+#######    Enable gzip + deflate compression   #######
+###################                ###################
+######################################################
+
+
+###################
+# Example
+###################
+
+# gzip/deflate compresion text, html, javascript, css, xml:
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/xml
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/x-javascript
+
+###################
+# What it does
+###################
+
+# This allows for your website to be sent to the client browser compressed if requested speeding page load times for browsers that can support it (which is most modern browsers)
+
+###################
+# Alternative
+###################
+
+# Or, compress certain file types by extension:
+<files *.html>
+SetOutputFilter DEFLATE
+</files>
+
+<files *.css>
+SetOutputFilter DEFLATE
+</files>
+
+######################################################
+###################       7        ###################
+############   Cache Control expiration   ############
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+ExpiresActive On
+ExpiresDefault "access plus <a-number> month/year/day"
+
+###################
+# Example
+###################
+
+Header unset Last-Modified
+ExpiresActive On
+ExpiresDefault "access plus 1 months"
+
+<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css)$">
+Header unset Last-Modified
+ExpiresActive On
+ExpiresDefault "access plus 1 months"
+</FilesMatch>
+
+###################
+# Conditions
+###################
+
+# If you use a number greater than 1 use plurals e.g. 'days' 'months' 'years'
+
+###################
+# What it does
+###################
+
+# This tells the browser to cache a version of the website files it downloads and keep them for a certain length of time.
+# The browser will check for updates to the files unless you add 'Header unset Last-Modified'
+
+###################
+# Additions
+###################
+
+Header unset Last-Modified
+
+# If you use these the browser will not look for an updated version until the expiration date/timer is up.
+
+
+
+######################################################
+###################       8        ###################
+#############    Block URLs like SPAM    #############
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+RewriteCond %{HTTP_REFERER} ^http://.example\.com/ [NC,OR]
+RewriteRule ^(.*)$ – [F,L]
+
+###################
+# Example
+###################
+
+RewriteCond %{HTTP_REFERER} ^http://.*ilovevitaly\.com/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*ilovevitaly.\.ru/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*ilovevitaly\.org/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*ilovevitaly\.info/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*iloveitaly\.ru/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*econom\.co/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*savetubevideo\.com/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*kambasoft\.com/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*buttons\-for\-website\.com/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*semalt\.com/ [NC,OR]
+RewriteCond %{HTTP_REFERER} ^http://.*darodar\.com/ [NC]
+RewriteRule ^(.*)$ – [F,L]
+
+###################
+# Conditions
+###################
+
+# You can have multiple conditions trigger the one rule
+
+###################
+# What it does
+###################
+
+# What this does is block any requests from these domains
+
+
+######################################################
+###################       9        ###################
+#######   Password Protect Files/Sub.Domains   #######
+###################                ###################
+######################################################
+
+
+###################
+# Template
+###################
+
+
+
+###################
+# Example
+###################
+
+
+
+###################
+# Conditions
+###################
+
+# If you want to remove multiple extensions then you will need to have multiple versions all with different extensions.
+# This only will execute the 1st 'RewriteRule' below it
+
+###################
+# What it does
+###################
+
+
+######################################################################################################
+######################################################################################################
+######################################################################################################
+
+
+SetEnv DEFAULT_PHP_VERSION 55
+#
+SetEnvIf Host invoices.orbital.vision passreq
+SetEnvIf Host clients.orbital.vision passreq
+
+AuthType Basic
+AuthName "Password Required"
+AuthUserFile /home/sites/orbital.vision/public_html/subdomains/.htpasswd
+Require valid-user
+Order allow,deny
+Allow from all
+Deny from env=passreq
+Satisfy any
