@@ -16,6 +16,7 @@
 # 8 Block addresses like SPAM
 # 9 Password Protect Files/Sub.Domains
 # 10 Prevent files from being loaded
+# 11 Friendly URLS 
 
 
 
@@ -405,6 +406,38 @@ RewriteRule ^(.*)$ – [F,L]
 ###################
 # What it does
 ###################
+
+
+
+######################################################
+###################       10        ###################
+#######   Password Protect Files/Sub.Domains   #######
+###################                ###################
+######################################################
+
+
+
+
+
+
+
+######################################################
+###################       11        ###################
+#######   Friendly URLS   #######
+###################                ###################
+######################################################
+
+RewriteRule ^cheese /foods/fat/milk/curds/cheese/index.php [NC,L]
+
+www.example.com/foods/fat/milk/curds/cheese/index.php
+Becomes
+www.example.com/cheese 
+
+^ – Match start from the beginning.
+$ –  Matches the end.
+? –  It makes preceding character optional.
+
+
 
 
 ######################################################################################################
