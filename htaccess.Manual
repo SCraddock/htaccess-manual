@@ -1,6 +1,15 @@
 ################################################################################
-###################            .htaccess Tutorial            ###################
+###################            .htaccess Manual              ###################
 ################################################################################
+
+# .htaccess is not to be played with. It is very precise as in if you get 1 character out of place you
+# could make the the whole site inaccessible (which is bad) or whole pages to cause a redirect loop which is just as bad
+
+# .htaccess is also a 1 way system you make the rules the sever executes them.
+
+# Imagine the website is a room and sites traffic are people wanting to get in the room. The .htaccess controlls the walls and where they go.
+# SO it can make a nice friendly URL for the traffic to get to the site ... or squish them and block access.
+
 
 ######################################################
 ###################    Contents    ###################
@@ -394,6 +403,19 @@ RewriteRule ^(.*)$ – [F,L]
 # Example
 ###################
 
+SetEnv DEFAULT_PHP_VERSION 55
+#
+SetEnvIf Host invoices.orbital.vision passreq
+SetEnvIf Host clients.orbital.vision passreq
+
+AuthType Basic
+AuthName "Password Required"
+AuthUserFile /home/sites/orbital.vision/public_html/subdomains/.htpasswd
+Require valid-user
+Order allow,deny
+Allow from all
+Deny from env=passreq
+Satisfy any
 
 
 ###################
@@ -407,16 +429,21 @@ RewriteRule ^(.*)$ – [F,L]
 # What it does
 ###################
 
+# if the url requires a password it will stop people form loading the file and present a username and password .... which will be in the .htpasswd 
+# if a correct combination is entered the person will load the file ... else they will be denied access
 
 
 ######################################################
 ###################       10        ###################
-#######   Password Protect Files/Sub.Domains   #######
+#######   Prevent files from being loaded/accessed   #######
 ###################                ###################
 ######################################################
 
 
 
+# I think you just deny all like above ^^ and no one can access the file it just locks you out.
+
+Allow from none
 
 
 
@@ -445,16 +472,3 @@ $ –  Matches the end.
 ######################################################################################################
 
 
-SetEnv DEFAULT_PHP_VERSION 55
-#
-SetEnvIf Host invoices.orbital.vision passreq
-SetEnvIf Host clients.orbital.vision passreq
-
-AuthType Basic
-AuthName "Password Required"
-AuthUserFile /home/sites/orbital.vision/public_html/subdomains/.htpasswd
-Require valid-user
-Order allow,deny
-Allow from all
-Deny from env=passreq
-Satisfy any
