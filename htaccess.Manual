@@ -454,6 +454,7 @@ Allow from none
 ###################                ###################
 ######################################################
 
+# Bit in square brackets subject to change based on scenario
 RewriteRule ^cheese /foods/fat/milk/curds/cheese/index.php [NC,L]
 
 www.example.com/foods/fat/milk/curds/cheese/index.php
