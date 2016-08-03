@@ -26,6 +26,7 @@
 # 9 Password Protect Files/Sub.Domains
 # 10 Prevent files from being loaded
 # 11 Friendly URLS 
+# 12 Redirect URLS
 
 
 
@@ -464,6 +465,17 @@ www.example.com/cheese
 ^ – Match start from the beginning.
 $ –  Matches the end.
 ? –  It makes preceding character optional.
+
+
+######################################################
+###################       12       ###################
+#######              Redirect URLS             #######
+###################                ###################
+######################################################
+
+# Redirect 1st URL bit to 2nd url 
+# Only use full URL if sending to another website
+Redirect 301 /ripley http://www.daleshousing.co.uk/lookingforahome/ripley.phpr optional.
 
 
 
