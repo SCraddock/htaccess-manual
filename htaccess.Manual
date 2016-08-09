@@ -28,7 +28,11 @@
 # 11 Prevent files from being loaded
 # 12 Friendly URLS 
 # 13 Redirect URLS
-
+# W.I.P 14 PHP values
+# W.I.P 15 Prevent Downloading
+# W.I.P 16 Force Downloading
+# W.I.P 17 Maintenance Mode 
+# W.I.P 18 Prevent Image hotlinking
 
 
 ######################################################
@@ -480,6 +484,82 @@ Redirect 301 /ripley http://www.daleshousing.co.uk/lookingforahome/ripley.phpr o
 
 
 
+
+######################################################
+###################       14       ###################
+#######                PHP values              #######
+###################                ###################
+######################################################
+
+
+
+php_value <key> <val>
+
+# For example:
+
+php_value upload_max_filesize 50M
+php_value max_execution_time 240
+
+
+######################################################
+###################       15       ###################
+#######               Prevent Downloading             #######
+###################                ###################
+######################################################
+
+
+
+<FilesMatch "\.(tex|log|aux)$">
+    Header set Content-Type text/plain
+</FilesMatch>
+
+
+
+######################################################
+###################       16       ###################
+#######           Force Downloading           #######
+###################                ###################
+######################################################
+
+# To make IE and Safari download when link has 'fdl=1' on the end
+# dont forget to add the '?' before the 'fdl=1' or a  '& in the link
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteCond %{QUERY_STRING} fdl=1
+RewriteRule .? - [T=application/octet-stream]
+
+
+# To make IE download files change the file types willy nilly
+<FilesMatch "\.(?i:doc|png|pdf)$">
+  Header set Content-Dispositions attachment
+</FilesMatch>
+
+
+
+
+######################################################
+###################       17       ###################
+#######           Maintenace Mode           #######
+###################                ###################
+######################################################
+
+Redirects everyone except your IP address to a page e.g. the maintenance page
+
+RewriteCond %{REMOTE_ADDR}  !your_ip_address
+RewriteCond %{REMOTE_ADDR}  !127.0.0.1
+RewriteRule !offline.php$ http://www.example.com/back_soon.html [L,R=307]
+
+######################################################
+###################       18       ###################
+#######        Prevent Image Hotlinking        #######
+###################                ###################
+######################################################
+
+RewriteEngine on
+RewriteCond %{HTTP_REFERER} !^$
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourwebsite.com [NC]
+RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourwebsite.com [NC]
+RewriteRule \.(jpg|jpeg|png|gif)$ http://i.imgur.com/g7ptdBB.png [NC,R,L]
 
 ######################################################################################################
 ######################################################################################################
