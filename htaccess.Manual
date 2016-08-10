@@ -2,6 +2,13 @@
 ###################            .htaccess Manual              ###################
 ################################################################################
 
+# This link tells what [L] means etc must read to convert
+# Gave idea to make it a page to be hosted maybe with portfolio ygm fam
+# https://n0where.net/common-htaccess-snippets/ 
+
+# Not gone through this link yet from CSS-tricks though at a glace over most are in here already
+# https://css-tricks.com/snippets/htaccess/
+
 # .htaccess is not to be played with. It is very precise as in if you get 1 character out of place you
 # could make the the whole site inaccessible (which is bad) or whole pages to cause a redirect loop which is just as bad
 
@@ -33,7 +40,10 @@
 # W.I.P 16 Force Downloading
 # W.I.P 17 Maintenance Mode 
 # W.I.P 18 Prevent Image hotlinking
-
+# W.I.P 19 Log PHP errors
+# W.I.P 20 Stop spam bots / eveeryone directly accessing wp-comments-post.php
+# W.I.P 21 Configure Server for HTML5 Videos
+# W.I.P 22 Use PHP inside .js Files
 
 ######################################################
 ####################      1       ####################
@@ -560,6 +570,67 @@ RewriteCond %{HTTP_REFERER} !^$
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourwebsite.com [NC]
 RewriteCond %{HTTP_REFERER} !^http(s)?://(www\.)?yourwebsite.com [NC]
 RewriteRule \.(jpg|jpeg|png|gif)$ http://i.imgur.com/g7ptdBB.png [NC,R,L]
+
+
+######################################################
+###################       19       ###################
+#######            PHP Error Logging           #######
+###################                ###################
+######################################################
+
+# display no errs to user
+php_flag display_startup_errors off
+php_flag display_errors off
+php_flag html_errors off
+# log to file
+php_flag log_errors on
+php_value error_log /location/to/php_error.log
+
+
+######################################################
+###################       20       ###################
+#######         Prevent Spam Bot access        #######
+###################                ###################
+######################################################
+
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_METHOD} POST
+RewriteCond %{REQUEST_URI} .wp-comments-post\.php*
+RewriteCond %{HTTP_REFERER} !.*yourdomainname.* [OR]
+RewriteCond %{HTTP_USER_AGENT} ^$
+RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
+</IfModule>
+
+######################################################
+###################       21       ###################
+######    Configure Server for HTML5 Videos    #######
+###################                ###################
+######################################################
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !=/favicon.ico
+AddType video/ogg .ogv
+AddType video/ogg .ogg
+AddType video/mp4 .mp4
+AddType video/webm .webm
+AddType application/x-shockwave-flash swf
+
+
+######################################################
+###################       22       ###################
+######           Use PHP in .js Files          #######
+###################                ###################
+######################################################
+
+AddType application/x-httpd-php .js
+AddHandler x-httpd-php5 .js
+
+<FilesMatch "\.(js|php)$">
+SetHandler application/x-httpd-php
+</FilesMatch>
 
 ######################################################################################################
 ######################################################################################################
