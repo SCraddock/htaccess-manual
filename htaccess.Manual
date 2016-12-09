@@ -2,8 +2,6 @@
 ###################            .htaccess Manual              ###################
 ################################################################################
 
-# Not gone through this link yet from CSS-tricks though at a glace over most are in here already
-# https://css-tricks.com/snippets/htaccess/
 
 # .htaccess is not to be played with. It is very precise as in if you get 1 character out of place you
 # could make the the whole site inaccessible (which is bad) or whole pages to cause a redirect loop which is just as bad
