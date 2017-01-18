@@ -38,6 +38,7 @@
 # W.I.P 20 Stop spam bots / eveeryone directly accessing wp-comments-post.php
 # W.I.P 21 Configure Server for HTML5 Videos
 # W.I.P 22 Use PHP inside .js Files
+# W.I.P 23 Selecting Directories
 
 ######################################################
 ####################      1       ####################
@@ -626,6 +627,24 @@ AddHandler x-httpd-php5 .js
 SetHandler application/x-httpd-php
 </FilesMatch>
 
+
+
+######################################################
+###################       23       ###################
+######           Use PHP in .js Files          #######
+###################                ###################
+######################################################
+
+<Directory /var/www/protected/>
+     AuthType Basic
+     AuthName "Production"
+     AuthUserFile /path/to/.htpasswd
+     Require valid-user
+</Directory>
+
+<Directory /var/www/protected/unprotected>
+     Satisfy Any
+</Directory>
 ######################################################################################################
 ######################################################################################################
 ######################################################################################################
