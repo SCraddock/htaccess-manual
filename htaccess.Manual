@@ -2,6 +2,7 @@
 ###################            .htaccess Manual              ###################
 ################################################################################
 
+# Created By Sam Craddock
 
 # .htaccess is not to be played with. It is very precise as in if you get 1 character out of place you
 # could make the the whole site inaccessible (which is bad) or whole pages to cause a redirect loop which is just as bad
@@ -649,4 +650,4 @@ SetHandler application/x-httpd-php
 ######################################################################################################
 ######################################################################################################
 
-
+# Created By Sam Craddock
