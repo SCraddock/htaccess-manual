@@ -76,3 +76,5 @@ RewriteRule ^(.*)$ – [F,L]
 #FileETag none
 #ExpiresActive On
 #ExpiresDefault "access plus 1 months"
+
+# Created By Sam Craddock
