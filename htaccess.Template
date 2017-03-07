@@ -2,6 +2,10 @@
 ###################            .htaccess template            ###################
 ################################################################################
 
+# Created By Sam Craddock 
+
+#####
+
 #Only put this in the .htaccess file once before any 'RewriteCond' or 'RewriteRule'
 #It doesn't have to be at the very start just before any 'RewriteCond' or 'RewriteRule' lines
 # What it does is turn on/off the comment mode for mod_rewrite (RewriteEngine off starts comment mode; RewriteEngine on
