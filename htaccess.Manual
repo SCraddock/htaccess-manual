@@ -9,9 +9,9 @@
 
 # .htaccess is also a 1 way system you make the rules the sever executes them.
 
-# Imagine the website is a room and sites traffic are people wanting to get in the room. The .htaccess controlls the walls and where they go.
-# SO it can make a nice friendly URL for the traffic to get to the site ... or squish them and block access.
+# Imagine the website is a room and sites traffic are people wanting to get in the room. The .htaccess controlls the doors, controlling who can get in and where they can go.
 
+# This file is a constant W.I.P. 
 
 ######################################################
 ###################    Contents    ###################
